@@ -17,13 +17,9 @@ bool cursorArea;
 
 void setup() {
   arduboy.begin();
-  //Seed the random number generator
-  srand(7/8);
-  //Set the game to 60 frames per second
+
   arduboy.setFrameRate(30);
   arduboy.clear();
-
-
 }
 
 void loop() {
@@ -36,30 +32,34 @@ void loop() {
       ball_prevx = ballx;
       ball_prevy = bally;
 
-      if(arduboy.pressed(UP_BUTTON) and bally > 0) {
+      justpressed = 0;
+
+      if(arduboy.pressed(UP_BUTTON) && bally > 0) {
         bally = bally - cursorshift;
+        justpressed = 1;
       }
-      if(arduboy.pressed(DOWN_BUTTON) and bally < 62) {
+      if(arduboy.pressed(DOWN_BUTTON) && bally < 62) {
         bally = bally + cursorshift;
+        justpressed = 1;
       }
-      if(arduboy.pressed(LEFT_BUTTON) and ballx > 0) {
+      if(arduboy.pressed(LEFT_BUTTON) && ballx > 0) {
         ballx = ballx - cursorshift;
+        justpressed = 1;
       }
-      if(arduboy.pressed(RIGHT_BUTTON) and bally < 126) {
+      if(arduboy.pressed(RIGHT_BUTTON) && bally < 126) {
         ballx = ballx + cursorshift;
+        justpressed = 1;
       }
 
-      cursorArea = arduboy.getPixel(ballx, ballx);
+      cursorArea = arduboy.getPixel(ballx, bally);
 
       arduboy.drawPixel(ballx, bally, WHITE);
 
       if(arduboy.pressed(A_BUTTON)) {
         arduboy.drawPixel(ballx, bally, WHITE);
-      } else {
-        if (cursorArea==0) {
-          arduboy.drawPixel(ballx, ballx, BLACK);
-        }
+      } else if (cursorArea==0) {
+          arduboy.drawPixel(ballx, bally, BLACK);
       }
-
+      
   arduboy.display();
 }
