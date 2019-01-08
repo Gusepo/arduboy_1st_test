@@ -13,7 +13,7 @@ int pixelcount = 0;
 int cursorshift = 1;
 int ball_prevx = 0;
 int ball_prevy = 0;
-bool cursorArea;
+bool cursorArea = 0;
 byte cursorColour;
 
 void setup() {
