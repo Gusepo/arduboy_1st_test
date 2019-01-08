@@ -14,6 +14,7 @@ int cursorshift = 1;
 int ball_prevx = 0;
 int ball_prevy = 0;
 bool cursorArea;
+byte cursorColour;
 
 void setup() {
   arduboy.begin();
@@ -33,7 +34,7 @@ void loop() {
       ball_prevy = bally;
 
       justpressed = 0;
-
+        
       if(arduboy.pressed(UP_BUTTON) && bally > 0) {
         bally = bally - cursorshift;
         justpressed = 1;
@@ -51,15 +52,22 @@ void loop() {
         justpressed = 1;
       }
 
+      //if in previous position Abutton was clicked paint the pixel white
+      if (cursorArea==1) {
+        arduboy.drawPixel(ball_prevx, ball_prevy, WHITE);
+      }
+
+      //get the color of the pixel before the cursor moves on it
       cursorArea = arduboy.getPixel(ballx, bally);
 
-      arduboy.drawPixel(ballx, bally, WHITE);
+      if (arduboy.everyXFrames(15)) {
+         cursorColour = cursorColour == BLACK ? WHITE : BLACK;
+           arduboy.drawPixel(ballx, bally, cursorColour);
+       }
 
       if(arduboy.pressed(A_BUTTON)) {
-        arduboy.drawPixel(ballx, bally, WHITE);
-      } else if (cursorArea==0) {
-          arduboy.drawPixel(ballx, bally, BLACK);
-      }
-      
+        cursorArea = 1;
+      } 
+
   arduboy.display();
 }
